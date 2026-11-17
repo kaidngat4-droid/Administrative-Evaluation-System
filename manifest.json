@@ -1,0 +1,93 @@
+{
+  "name": "نظام التقييم الإلكتروني - NIAS",
+  "short_name": "NIAS",
+  "description": "نظام التقييم الإلكتروني للمعهد الوطني للعلوم الإدارية - فرع إب",
+  "dir": "rtl",
+  "lang": "ar",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0d4a2e",
+  "theme_color": "#0d4a2e",
+  "categories": ["education", "productivity", "business"],
+  "icons": [
+    {
+      "src": "assets/images/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/maskable-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "التقييمات",
+      "short_name": "تقييم",
+      "description": "عرض التقييمات",
+      "url": "/index.html",
+      "icons": [{ "src": "assets/images/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "المستخدمين",
+      "short_name": "مستخدمين",
+      "description": "إدارة المستخدمين",
+      "url": "/users.html",
+      "icons": [{ "src": "assets/images/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "التقارير",
+      "short_name": "تقارير",
+      "description": "عرض التقارير",
+      "url": "/reports.html",
+      "icons": [{ "src": "assets/images/icon-96x96.png", "sizes": "96x96" }]
+    }
+  ]
+}

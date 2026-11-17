@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة المستخدمين — نظام التقييم الإلكتروني NIAS</title>
+  <meta name="description" content="إدارة المستخدمين في نظام التقييم الإلكتروني - المعهد الوطني للعلوم الإدارية">
+  <meta name="theme-color" content="#0d4a2e">
+  
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Noto+Kufi+Arabic:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/users.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="assets/images/icon-72x72.png">
+  
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="NIAS">
+  <link rel="apple-touch-icon" href="assets/images/icon-192x192.png">
+</head>
+<body data-page="users">
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       الرأس الرسمي
+       ═══════════════════════════════════════════════════════ -->
+  <header class="official-header no-print" role="banner">
+    <div class="official-header-content">
+      <img src="assets/images/logo-yemen-hd.png" alt="شعار الجمهورية اليمنية" class="official-emblem" width="110" height="110" loading="eager">
+      <span class="official-header-republic">الجمهورية اليمنية</span>
+      <div class="official-header-divider" aria-hidden="true"></div>
+      <img src="assets/images/logo-institute-hd.png" alt="شعار المعهد الوطني للعلوم الإدارية" class="official-emblem institute" width="100" height="100" loading="eager">
+      <h1 class="official-header-title">المعهد الوطني للعلوم الإدارية</h1>
+      <p class="official-header-subtitle">فرع إب — مركز التخطيط والتطوير وضمان الجودة</p>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════
+       شريط التطبيق
+       ═══════════════════════════════════════════════════════ -->
+  <header class="app-header no-print" role="navigation">
+    <div class="header-inner">
+      <a href="index.html" class="header-brand" aria-label="الصفحة الرئيسية">
+        <div class="header-logo">NIAS</div>
+        <div class="header-text">
+          <h1>إدارة المستخدمين</h1>
+          <span>المعهد الوطني للعلوم الإدارية</span>
+        </div>
+      </a>
+      
+      <nav class="header-nav" aria-label="القائمة الرئيسية">
+        <a href="index.html" class="header-btn" title="الرئيسية">
+          <i class="fas fa-home" aria-hidden="true"></i>
+        </a>
+        <a href="users.html" class="header-btn active" title="المستخدمين" aria-current="page">
+          <i class="fas fa-users" aria-hidden="true"></i>
+        </a>
+        <a href="reports.html" class="header-btn" title="التقارير">
+          <i class="fas fa-chart-bar" aria-hidden="true"></i>
+        </a>
+        <button class="header-btn" id="theme-toggle" title="تبديل الوضع الليلي" aria-label="تبديل الوضع الليلي">
+          <i class="fas fa-moon" id="theme-icon" aria-hidden="true"></i>
+        </button>
+        
+        <div class="user-chip" id="user-chip" role="button" tabindex="0" aria-label="تسجيل الخروج" title="تسجيل الخروج">
+          <div class="user-avatar" id="user-avatar">--</div>
+          <div class="user-info">
+            <div class="user-name-label" id="user-name-label">--</div>
+            <div class="user-role-label" id="user-role-label">--</div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════
+       المحتوى الرئيسي
+       ═══════════════════════════════════════════════════════ -->
+  <main class="app-main" id="main-content">
+    
+    <!-- Hero -->
+    <section class="hero-section animate-fade-in" aria-labelledby="page-title">
+      <span class="hero-badge">إدارة النظام</span>
+      <h2 class="hero-title" id="page-title">إدارة المستخدمين</h2>
+      <p class="hero-subtitle">إضافة وتعديل وإدارة حسابات المستخدمين في النظام</p>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-row" id="user-stats" aria-label="إحصائيات المستخدمين">
+      <article class="stat-card" data-stat="total">
+        <div class="stat-skeleton" aria-hidden="true"></div>
+        <div class="stat-value" data-count="0">0</div>
+        <div class="stat-label">إجمالي المستخدمين</div>
+      </article>
+      <article class="stat-card" data-stat="active">
+        <div class="stat-skeleton" aria-hidden="true"></div>
+        <div class="stat-value" data-count="0">0</div>
+        <div class="stat-label">مستخدمين نشطين</div>
+      </article>
+      <article class="stat-card" data-stat="evaluators">
+        <div class="stat-skeleton" aria-hidden="true"></div>
+        <div class="stat-value" data-count="0">0</div>
+        <div class="stat-label">مقيّمين</div>
+      </article>
+      <article class="stat-card" data-stat="students">
+        <div class="stat-skeleton" aria-hidden="true"></div>
+        <div class="stat-value" data-count="0">0</div>
+        <div class="stat-label">طلاب</div>
+      </article>
+    </section>
+
+    <!-- Panel -->
+    <section class="admin-panel" aria-labelledby="panel-title">
+      <div class="section-title">
+        <div class="icon" aria-hidden="true"><i class="fas fa-users-cog"></i></div>
+        <h2 id="panel-title">قائمة المستخدمين</h2>
+        <div class="section-actions">
+          <button class="btn btn-ghost btn-sm" id="btn-export" title="تصدير إلى Excel">
+            <i class="fas fa-file-excel" aria-hidden="true"></i> تصدير
+          </button>
+          <button class="btn btn-ghost btn-sm" id="btn-import" title="استيراد من Excel">
+            <i class="fas fa-upload" aria-hidden="true"></i> استيراد
+          </button>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="users-toolbar">
+        <div class="search-box">
+          <i class="fas fa-search search-icon" aria-hidden="true"></i>
+          <input type="search" 
+                 id="user-search" 
+                 class="search-input"
+                 placeholder="البحث بالاسم أو اسم المستخدم أو البريد..." 
+                 aria-label="البحث عن مستخدم"
+                 autocomplete="off">
+          <button class="search-clear" id="search-clear" aria-label="مسح البحث" hidden>
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+        
+        <div class="toolbar-filters">
+          <select class="filter-select" id="role-filter" aria-label="تصفية حسب الدور">
+            <option value="">كل الأدوار</option>
+            <optgroup label="الإدارة العليا">
+              <option value="admin">مدير النظام</option>
+              <option value="dean">عميد</option>
+              <option value="vice_dean">نائب عميد</option>
+              <option value="head">رئيس قسم</option>
+            </optgroup>
+            <optgroup label="التدريس والتقييم">
+              <option value="faculty">عضو هيئة تدريس</option>
+              <option value="evaluator">مقيّم</option>
+            </optgroup>
+            <optgroup label="أخرى">
+              <option value="student">طالب</option>
+            </optgroup>
+          </select>
+          
+          <select class="filter-select" id="status-filter" aria-label="تصفية حسب الحالة">
+            <option value="">كل الحالات</option>
+            <option value="active">نشط</option>
+            <option value="inactive">معطل</option>
+          </select>
+        </div>
+        
+        <button class="btn btn-success" id="btn-add-user" aria-label="إضافة مستخدم جديد">
+          <i class="fas fa-plus" aria-hidden="true"></i>
+          <span>مستخدم جديد</span>
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrap" role="region" aria-label="جدول المستخدمين" tabindex="0">
+        <table class="data-table" id="users-table">
+          <thead>
+            <tr>
+              <th scope="col" class="col-num">#</th>
+              <th scope="col" class="col-name">الاسم / اسم المستخدم</th>
+              <th scope="col" class="col-email">البريد الإلكتروني</th>
+              <th scope="col" class="col-dept">القسم / الكلية</th>
+              <th scope="col" class="col-role">الدور</th>
+              <th scope="col" class="col-status">الحالة</th>
+              <th scope="col" class="col-login">آخر دخول</th>
+              <th scope="col" class="col-actions">الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <!-- Skeleton Loading -->
+            <tr class="skeleton-row"><td colspan="8"><div class="skeleton-line"></div></td></tr>
+            <tr class="skeleton-row"><td colspan="8"><div class="skeleton-line"></div></td></tr>
+            <tr class="skeleton-row"><td colspan="8"><div class="skeleton-line"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state" hidden>
+        <div class="empty-icon" aria-hidden="true"><i class="fas fa-user-slash"></i></div>
+        <h3>لا يوجد مستخدمين</h3>
+        <p>ابدأ بإضافة مستخدم جديد أو تعديل معايير البحث</p>
+      </div>
+
+      <!-- Pagination -->
+      <nav class="pagination-bar" id="pagination" aria-label="التنقل بين الصفحات" hidden>
+        <button class="btn btn-ghost btn-sm" id="btn-prev" aria-label="الصفحة السابقة">
+          <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        </button>
+        <span class="pagination-info" id="pagination-info">صفحة 1 من 1</span>
+        <button class="btn btn-ghost btn-sm" id="btn-next" aria-label="الصفحة التالية">
+          <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </button>
+      </nav>
+    </section>
+
+    <!-- Signature -->
+    <aside class="psig-card no-print" role="contentinfo" aria-label="التوقيع الإلكتروني">
+      <!-- ... نفس محتوى التوقيع ... -->
+    </aside>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════
+       Modal: إضافة/تعديل مستخدم
+       ═══════════════════════════════════════════════════════ -->
+  <dialog class="modal-overlay" id="user-modal" aria-labelledby="user-modal-title" aria-modal="true">
+    <div class="modal" style="max-width:560px;">
+      <div class="modal-head">
+        <h3 id="user-modal-title">مستخدم جديد</h3>
+        <button class="modal-close" id="modal-close" aria-label="إغلاق النافذة">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <form class="modal-body" id="user-form" novalidate>
+        <input type="hidden" id="user-id" name="id">
+        
+        <div class="form-grid">
+          <div class="form-group form-group-full">
+            <label for="user-name">الاسم الكامل <span class="required" aria-hidden="true">*</span></label>
+            <input type="text" id="user-name" name="name" class="form-control" required 
+                   placeholder="مثال: د. أحمد محمد العلي"
+                   autocomplete="name" minlength="3" maxlength="100">
+            <span class="field-error" id="error-name"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="user-username">اسم المستخدم <span class="required" aria-hidden="true">*</span></label>
+            <input type="text" id="user-username" name="username" class="form-control" required 
+                   placeholder="ahmad.ali" autocomplete="off"
+                   pattern="[a-zA-Z0-9_.\-]{3,32}"
+                   title="3-32 حرفاً: أحرف إنجليزية، أرقام، نقاط، شرطات">
+            <span class="field-error" id="error-username"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="user-email">البريد الإلكتروني</label>
+            <input type="email" id="user-email" name="email" class="form-control" 
+                   placeholder="example@email.com" autocomplete="email">
+            <span class="field-error" id="error-email"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="user-phone">رقم الهاتف</label>
+            <input type="tel" id="user-phone" name="phone" class="form-control" 
+                   placeholder="+967 XXX XXX XXX" autocomplete="tel"
+                   pattern="[\+\d\s\-]{7,20}">
+            <span class="field-error" id="error-phone"></span>
+          </div>
+          
+          <div class="form-group form-group-full">
+            <label for="user-department">القسم / الكلية <span class="required" aria-hidden="true">*</span></label>
+            <input type="text" id="user-department" name="department" class="form-control" required 
+                   placeholder="مثال: قسم الإدارة الصحية" list="dept-list">
+            <datalist id="dept-list">
+              <option value="قسم الإدارة الصحية">
+              <option value="قسم الإدارة المالية">
+              <option value="قسم الموارد البشرية">
+              <option value="قسم نظم المعلومات">
+            </datalist>
+            <span class="field-error" id="error-department"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="user-password">كلمة المرور <span class="required" id="pass-required" aria-hidden="true">*</span></label>
+            <div class="input-group">
+              <input type="password" id="user-password" name="password" class="form-control" 
+                     placeholder="6 أحرف على الأقل" autocomplete="new-password" minlength="6">
+              <button type="button" class="btn btn-ghost input-action" id="btn-toggle-pass" 
+                      aria-label="إظهار كلمة المرور" title="إظهار/إخفاء">
+                <i class="fas fa-eye" aria-hidden="true"></i>
+              </button>
+            </div>
+            <span class="field-error" id="error-password"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="user-role">الدور <span class="required" aria-hidden="true">*</span></label>
+            <select id="user-role" name="role" class="form-control" required>
+              <option value="">اختر الدور</option>
+              <optgroup label="الإدارة العليا">
+                <option value="admin">مدير النظام</option>
+                <option value="dean">عميد</option>
+                <option value="vice_dean">نائب عميد</option>
+                <option value="head">رئيس قسم</option>
+              </optgroup>
+              <optgroup label="التدريس والتقييم">
+                <option value="faculty">عضو هيئة تدريس</option>
+                <option value="evaluator">مقيّم</option>
+              </optgroup>
+              <optgroup label="أخرى">
+                <option value="student">طالب</option>
+              </optgroup>
+            </select>
+            <span class="field-error" id="error-role"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="user-status">الحالة</label>
+            <select id="user-status" name="status" class="form-control">
+              <option value="active">نشط</option>
+              <option value="inactive">معطل</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="modal-foot">
+          <button type="button" class="btn btn-ghost" id="btn-cancel">إلغاء</button>
+          <button type="submit" class="btn btn-success" id="btn-save">
+            <span class="btn-text"><i class="fas fa-save" aria-hidden="true"></i> حفظ</span>
+            <span class="btn-loader" hidden><i class="fas fa-spinner fa-spin" aria-hidden="true"></i> جاري الحفظ...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ═══════════════════════════════════════════════════════
+       Modal: تأكيد الحذف
+       ═══════════════════════════════════════════════════════ -->
+  <dialog class="modal-overlay" id="delete-modal" aria-labelledby="delete-modal-title" aria-modal="true">
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-head modal-head-danger">
+        <h3 id="delete-modal-title">تأكيد الحذف</h3>
+        <button class="modal-close" id="delete-modal-close" aria-label="إغلاق">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="delete-warning">
+          <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+          <p>هل أنت متأكد من حذف هذا المستخدم؟</p>
+        </div>
+        <p class="delete-target" id="delete-user-name"></p>
+        <p class="delete-hint">لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع البيانات المرتبطة بهذا المستخدم.</p>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="btn-cancel-delete">إلغاء</button>
+        <button type="button" class="btn btn-danger" id="btn-confirm-delete">
+          <span class="btn-text"><i class="fas fa-trash" aria-hidden="true"></i> حذف نهائي</span>
+          <span class="btn-loader" hidden><i class="fas fa-spinner fa-spin" aria-hidden="true"></i> جاري الحذف...</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ═══════════════════════════════════════════════════════
+       السكربتات
+       ═══════════════════════════════════════════════════════ -->
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/users.js" type="module"></script>
+  <script src="js/sw-register.js" type="module"></script>
+
+</body>
+</html>

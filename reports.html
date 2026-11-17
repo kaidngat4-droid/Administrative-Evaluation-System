@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>التقارير — نظام التقييم الإلكتروني</title>
+  <meta name="description" content="التقارير والإحصائيات في نظام التقييم الإلكتروني - المعهد الوطني للعلوم الإدارية">
+  <meta name="theme-color" content="#0a1628">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Cairo:wght@400;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%230a1628'/><circle cx='50' cy='50' r='38' fill='none' stroke='%23e8a820' stroke-width='2'/><path d='M50 30v40M35 38h30M35 38l-8 15a8 6 0 0 0 16 0zM65 38l-8 15a8 6 0 0 0 16 0zM42 66h16' stroke='%23e8a820' stroke-width='2.4' fill='none' stroke-linecap='round'/></svg>">
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+<header class="official-header no-print">
+  <div class="official-header-content">
+    <img src="assets/images/logo-yemen-hd.png" alt="شعار الجمهورية اليمنية" class="official-emblem" width="110" height="110">
+    <span class="official-header-republic">الجمهورية اليمنية</span>
+    <div class="official-header-divider"></div>
+    <img src="assets/images/logo-institute-hd.png" alt="شعار المعهد الوطني للعلوم الإدارية" class="official-emblem institute" width="100" height="100">
+    <h1 class="official-header-title">المعهد الوطني للعلوم الإدارية</h1>
+    <p class="official-header-subtitle">فرع إب — مركز التخطيط والتطوير وضمان الجودة</p>
+  </div>
+</header>
+
+<header class="app-header no-print">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-logo">NIAS</div>
+      <div class="header-text">
+        <h1>التقارير والإحصائيات</h1>
+        <span>المعهد الوطني للعلوم الإدارية</span>
+      </div>
+    </div>
+    <nav class="header-nav no-print" aria-label="القائمة الرئيسية">
+      <a href="index.html" class="header-btn" aria-label="الرئيسية" title="الرئيسية"><i class="fas fa-home"></i></a>
+      <a href="users.html" class="header-btn" aria-label="المستخدمين" title="المستخدمين"><i class="fas fa-users"></i></a>
+      <a href="reports.html" class="header-btn active" aria-label="التقارير" title="التقارير"><i class="fas fa-chart-bar"></i></a>
+      <button class="header-btn" onclick="App.toggleTheme()" title="تبديل الوضع الليلي" aria-label="تبديل الوضع الليلي">
+        <i class="fas fa-moon" id="theme-icon"></i>
+      </button>
+      <div class="user-chip" id="user-chip" onclick="Auth.logout()" title="تسجيل الخروج" role="button" tabindex="0">
+        <div class="user-avatar" id="user-avatar">--</div>
+        <div class="user-info">
+          <div class="user-name-label" id="user-name-label">--</div>
+          <div class="user-role-label" id="user-role-label">--</div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="app-main">
+  <section class="hero-section animate-fade-in">
+    <span class="hero-badge">تحليل البيانات</span>
+    <h2 class="hero-title">التقارير والإحصائيات</h2>
+    <p class="hero-subtitle">عرض التقارير التفصيلية والإحصائيات الشاملة للتقييمات</p>
+  </section>
+
+  <div class="report-summary-cards" id="summary-cards">
+    <div class="summary-card">
+      <div class="icon green" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0); color:var(--primary-dark);"><i class="fas fa-clipboard-check"></i></div>
+      <div class="value" id="rep-total">0</div>
+      <div class="label">إجمالي التقييمات</div>
+    </div>
+    <div class="summary-card">
+      <div class="icon blue" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe); color:#1e40af;"><i class="fas fa-star"></i></div>
+      <div class="value" id="rep-avg">0</div>
+      <div class="label">متوسط الدرجات</div>
+    </div>
+    <div class="summary-card">
+      <div class="icon gold" style="background:linear-gradient(135deg,#fef3c7,#fde68a); color:#92400e;"><i class="fas fa-trophy"></i></div>
+      <div class="value" id="rep-excellent">0</div>
+      <div class="label">ممتاز</div>
+    </div>
+    <div class="summary-card">
+      <div class="icon red" style="background:linear-gradient(135deg,#fee2e2,#fecaca); color:#991b1b;"><i class="fas fa-exclamation-triangle"></i></div>
+      <div class="value" id="rep-weak">0</div>
+      <div class="label">ضعيف</div>
+    </div>
+  </div>
+
+  <div class="admin-panel">
+    <div class="section-title">
+      <div class="icon"><i class="fas fa-filter"></i></div>
+      <span>تصفية التقارير</span>
+    </div>
+    <div class="report-filters">
+      <div class="form-group">
+        <label>نوع التقييم</label>
+        <select class="form-control" id="filter-type" onchange="Reports.load()">
+          <option value="">الكل</option>
+          <option value="academic">أكاديمي</option>
+          <option value="administrative">إداري</option>
+          <option value="quality">جودة</option>
+          <option value="research">بحث علمي</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>من تاريخ</label>
+        <input type="date" class="form-control" id="filter-from" onchange="Reports.load()">
+      </div>
+      <div class="form-group">
+        <label>إلى تاريخ</label>
+        <input type="date" class="form-control" id="filter-to" onchange="Reports.load()">
+      </div>
+      <div class="form-group">
+        <label>المقيّم</label>
+        <select class="form-control" id="filter-evaluator" onchange="Reports.load()">
+          <option value="">الكل</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:1.5rem;">
+      <div class="icon"><i class="fas fa-table"></i></div>
+      <span>نتائج التقييمات</span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" id="reports-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>الاسم</th>
+            <th>النوع</th>
+            <th>المقيّم</th>
+            <th>الدرجة</th>
+            <th>التقدير</th>
+            <th>التاريخ</th>
+          </tr>
+        </thead>
+        <tbody id="reports-table-body">
+          <!-- يتم ملؤها بواسطة JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="action-bar no-print" style="position:static; margin-top:1.5rem;">
+      <button class="btn btn-primary" onclick="Reports.exportCSV()">
+        <i class="fas fa-file-csv"></i> تصدير CSV
+      </button>
+      <button class="btn btn-success" onclick="window.print()">
+        <i class="fas fa-print"></i> طباعة
+      </button>
+      <button class="btn btn-ghost" onclick="Reports.resetFilters()">
+        <i class="fas fa-undo"></i> إعادة تعيين
+      </button>
+    </div>
+  </div>
+
+  <!-- التوقيع -->
+  <div class="psig-card" role="contentinfo" aria-label="التوقيع الإلكتروني للدكتور صلاح الأهدل">
+    <div class="psig-corner tl"></div>
+    <div class="psig-corner tr"></div>
+    <div class="psig-corner bl"></div>
+    <div class="psig-corner br"></div>
+    <div class="psig-particles">
+      <div class="psig-particle"></div>
+      <div class="psig-particle"></div>
+      <div class="psig-particle"></div>
+      <div class="psig-particle"></div>
+    </div>
+    <div class="psig-inner">
+      <div class="psig-avatar">
+        <div class="psig-avatar-ring-outer"></div>
+        <div class="psig-avatar-ring-inner"></div>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1" fill="none" opacity="0.3"/>
+          <ellipse cx="12" cy="12" rx="3" ry="9.5" stroke="currentColor" stroke-width="0.7" fill="none" opacity="0.4"/>
+          <ellipse cx="12" cy="12" rx="9.5" ry="3" stroke="currentColor" stroke-width="0.7" fill="none" opacity="0.4"/>
+          <path d="M2.5 12h19" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+          <path d="M12 2.5c-1.8 2.8-2.8 6-2.8 9.5s1 6.7 2.8 9.5c1.8-2.8 2.8-6 2.8-9.5s-1-6.7-2.8-9.5z" stroke="currentColor" stroke-width="0.7" fill="none" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="psig-content">
+        <div class="psig-name-en">Dr. Salah Al-Ahdal</div>
+        <div class="psig-name-ar">د. صلاح الأهدل</div>
+        <div class="psig-divider"></div>
+        <div class="psig-role">
+          <span class="psig-role-line"><strong>Consultant in Medical Design &amp; Development</strong></span>
+          <span class="psig-role-line">Engineering &amp; Global Solutions</span>
+        </div>
+        <div class="psig-footer">
+          <div class="psig-status">
+            <span class="psig-status-dot"></span>
+            <span>GLOBAL NETWORK ACTIVE</span>
+          </div>
+          <div class="psig-id">ID: SAH-MED-2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/db.js"></script>
+<script src="js/app.js"></script>
+<script src="js/reports.js"></script>
+</body>
+</html>

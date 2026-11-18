@@ -84,3 +84,26 @@ html body .psig-card [class*="corner"]{border-color:#f2c14e !important}
 /* إصلاح: الجسيمات الصغيرة فقط، لا الحاوية */
 html body .psig-card .psig-particles{background:none !important}
 html body .psig-card .psig-particle{background:#f2c14e !important}
+
+/* وضوح النصوص على الخلفية الخضراء */
+html:root{
+  --txt:#ffffff;
+  --txt-muted:rgba(255,255,255,.82);
+  --txt-faint:rgba(255,255,255,.65);
+}
+html body p,html body li,html body label,html body td,html body th{
+  color:rgba(255,255,255,.92) !important;
+}
+html body .btn-back,html body [class*="back"],
+html body button:not(.btn-login):not(.btn-primary){
+  color:#fff !important;
+}
+
+/* نص المقدمة: اللون مكتوب inline في app.js */
+html body .info-section{
+  background:rgba(6,42,23,.55) !important;
+  border:1px solid rgba(242,193,78,.3) !important;
+}
+html body .info-section div[style*="color"]{
+  color:rgba(255,255,255,.94) !important;
+}

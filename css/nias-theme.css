@@ -1,0 +1,86 @@
+/* الهوية الموحدة: أخضر رسمي + ذهبي + Amiri */
+html:root{
+  --primary:#0f4c30; --primary-light:#145c3e; --primary-dark:#062a17;
+  --primary-glow:rgba(242,193,78,.2);
+  --gold:#f2c14e; --gold-light:#f7d87c;
+  --gold-dim:rgba(242,193,78,.2); --gold-glow:rgba(242,193,78,.4);
+  --azure:#f2c14e; --azure-glow:rgba(242,193,78,.35);
+  --font-heading:'Amiri','Cairo',serif;
+  --font-kufi:'Amiri','Cairo',serif;
+  --font-naskh:'Amiri','Cairo',serif;
+}
+
+/* الخط: كل النصوص Amiri، والأيقونات تبقى كما هي */
+body,p,span,div,a,button,input,textarea,select,label,td,th,li,h1,h2,h3,h4,h5,h6{
+  font-family:'Amiri','Cairo',serif !important;
+}
+.fa,.fas,.far,.fab,[class*="fa-"]{font-family:"Font Awesome 6 Free","Font Awesome 6 Brands" !important}
+.fas,.fa-solid{font-weight:900 !important}
+
+/* الشريط العلوي للتطبيق بنفس لون الترويسة */
+.app-header{
+  background:linear-gradient(180deg,#104d2e 0%,#062a17 100%) !important;
+  border-bottom:3px solid #e6b422 !important;
+}
+.app-header h1,.header-text h1{color:#f2c14e !important}
+.app-header p,.app-header span{color:#fff !important}
+.header-logo{background:linear-gradient(135deg,#145c3e,#0f4c30) !important;
+  border:2px solid #e6b422 !important;color:#f2c14e !important}
+
+/* خلفية الصفحة والبطاقات */
+body{background:#062a17 !important}
+.card,.stat-card,.panel,.modal,.modal-box{
+  background:linear-gradient(180deg,#0f4c30 0%,#0a3320 100%) !important;
+  border:1px solid rgba(242,193,78,.35) !important;
+}
+.card-title,.modal-head h3{color:#f2c14e !important}
+
+/* الأزرار */
+.btn-primary,button[type="submit"],.btn-login{
+  background:linear-gradient(180deg,#145c3e,#0f4c30) !important;
+  color:#fff !important;border:1px solid #e6b422 !important;
+}
+.btn-primary:hover,.btn-login:hover{background:#1a7049 !important}
+
+/* صفحة الدخول */
+html:root{ --surface:#0f4c30; --surface-hover:#145c3e; --card-bg:#0f4c30; --input-bg:rgba(6,42,23,.7); --border:rgba(242,193,78,.35) }
+.login-card,.asig-card{
+  background:linear-gradient(180deg,#0f4c30 0%,#0a3320 100%) !important;
+  border:1px solid rgba(242,193,78,.4) !important;
+}
+.login-card::before{background:linear-gradient(90deg,#0f4c30,#f2c14e,#0f4c30) !important}
+.card-icon{background:rgba(242,193,78,.12) !important;border-color:rgba(242,193,78,.5) !important}
+.card-icon i{color:#f2c14e !important}
+.field-label,.field-label i{color:#f2c14e !important}
+.login-card input[type="text"],.login-card input[type="password"]{
+  background:rgba(6,42,23,.7) !important;
+  border:1px solid rgba(242,193,78,.35) !important;
+  color:#fff !important;
+}
+.btn-login{background:linear-gradient(180deg,#1a7049,#0f4c30) !important;
+  color:#fff !important;border:1px solid #e6b422 !important}
+.card-footer .version,.forgot-link{color:#f2c14e !important}
+
+/* بطاقة التوقيع الإلكتروني */
+html body .psig-card{
+  background:linear-gradient(180deg,#0f4c30 0%,#0a3320 100%) !important;
+  border:1px solid rgba(242,193,78,.45) !important;
+  box-shadow:0 20px 60px rgba(0,0,0,.5) !important;
+}
+html body .psig-card::before{
+  background:linear-gradient(90deg,transparent,#f2c14e,#e6b422,#f2c14e,transparent) !important;
+  background-size:200% 100% !important;
+}
+html body .psig-card,html body .psig-card *{font-family:'Amiri','Cairo',serif !important}
+html body .psig-name-en{
+  background:none !important;
+  -webkit-text-fill-color:#f2c14e !important;
+  color:#f2c14e !important;
+}
+html body .psig-card [class*="name"],
+html body .psig-card h1,html body .psig-card h2,html body .psig-card h3{color:#f2c14e !important}
+html body .psig-card [class*="corner"]{border-color:#f2c14e !important}
+
+/* إصلاح: الجسيمات الصغيرة فقط، لا الحاوية */
+html body .psig-card .psig-particles{background:none !important}
+html body .psig-card .psig-particle{background:#f2c14e !important}

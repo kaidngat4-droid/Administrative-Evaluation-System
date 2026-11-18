@@ -19,7 +19,7 @@
 /* ═══════════════════════════════════════════════════════
    Configuration & Constants
    ═══════════════════════════════════════════════════════ */
-const BUILD_ID = '1.1.0';
+const BUILD_ID = '1.2.0';
 const CACHE_PREFIX = 'nias';
 const CACHE_NAMES = {
   static: `${CACHE_PREFIX}-static-${BUILD_ID}`,
@@ -43,6 +43,7 @@ const CORE_ASSETS = [
   '/reports.html',
   '/offline.html',
   '/css/style.css',
+  '/css/nias-theme.css',
   '/js/db.js',
   '/js/app.js',
   '/js/users.js',

@@ -975,11 +975,25 @@ const DB = {
     keysToDelete.forEach(key => cache.delete(key));
   },
 
-  async addUserAsync({ username, password, name, role, department, email, phone }) {
+  BRANCHES: [
+    'المعهد الوطني للعلوم الإدارية - فرع صنعاء',
+    'المعهد الوطني للعلوم الإدارية - فرع تعز',
+    'المعهد الوطني للعلوم الإدارية - فرع الحديدة',
+    'المعهد الوطني للعلوم الإدارية - فرع عدن',
+    'المعهد الوطني للعلوم الإدارية - فرع إب'
+  ],
+
+  async addUserAsync({ username, password, name, role, department, branch, email, phone }) {
+    const cu = (typeof Auth !== 'undefined') ? Auth.user : null;
+    if (cu && cu.role !== ROLES.ADMIN) {
+      const me = await this.findUserById(cu.id);
+      branch = (me && me.branch) || '';
+    }
     const err = Validator.username(username) || Validator.password(password)
              || Validator.name(name) || Validator.role(role) 
              || Validator.department(department) || Validator.email(email) 
-             || Validator.phone(phone);
+             || Validator.phone(phone)
+             || (branch && !this.BRANCHES.includes(branch) ? 'الفرع غير صحيح' : '');
     if (err) throw new Error(err);
 
     const existing = await this.findUserByUsername(username);
@@ -987,7 +1001,7 @@ const DB = {
 
     const { hash, salt, algo } = await hashPassword(password);
     return await this._addUserInternal({
-      username, name, role, department, email, phone,
+      username, name, role, department, branch, email, phone,
       passwordHash: hash, passwordSalt: salt, passwordAlgo: algo,
       id: generateId('u'), createdAt: new Date().toISOString(), isActive: true
     });
@@ -997,10 +1011,13 @@ const DB = {
     const user = await this.findUserById(id);
     if (!user) return null;
 
-    const ALLOWED = ['name', 'role', 'department', 'email', 'phone', 'isActive', 'mustChangePassword'];
+    const ALLOWED = ['name', 'role', 'department', 'branch', 'email', 'phone', 'isActive', 'mustChangePassword'];
     const filtered = Object.fromEntries(
       Object.entries(updates).filter(([k]) => ALLOWED.includes(k))
     );
+
+    const cu2 = (typeof Auth !== 'undefined') ? Auth.user : null;
+    if (cu2 && cu2.role !== ROLES.ADMIN) delete filtered.branch;
 
     if (filtered.role) {
       const roleErr = Validator.role(filtered.role);
@@ -1096,6 +1113,33 @@ const DB = {
     return evaluations;
   },
   
+  async _scopeBranch() {
+    const u = (typeof Auth !== 'undefined') ? Auth.user : null;
+    if (!u) return null;
+    if (u.role === ROLES.ADMIN) {
+      let b = '';
+      try { b = localStorage.getItem('nias_branch_filter') || ''; } catch (e) {}
+      return b || null;
+    }
+    const full = await this.findUserById(u.id);
+    return (full && full.branch) || '';
+  },
+
+  async getUsersScoped() {
+    const all = await this.getUsers();
+    const b = await this._scopeBranch();
+    return b === null ? all : all.filter(x => (x.branch || '') === b);
+  },
+
+  async getEvaluationsScoped() {
+    const all = await this.getEvaluations();
+    const b = await this._scopeBranch();
+    if (b === null) return all;
+    const users = await this.getUsers();
+    const map = new Map(users.map(x => [x.id, x.branch || '']));
+    return all.filter(e => (e.branch || map.get(e.targetId) || '') === b);
+  },
+
   async getEvaluationById(id) { 
     return await niasDB.getById('evaluations', id); 
   },
@@ -1148,6 +1192,7 @@ const DB = {
     data.createdAt = data.createdAt || new Date().toISOString();
     data.status = data.status || 'completed';
     data.department = data.department || target.department;
+    data.branch = data.branch || target.branch || evaluator.branch || '';
 
     await niasDB.add('evaluations', data);
     cache.delete('evaluations:all');

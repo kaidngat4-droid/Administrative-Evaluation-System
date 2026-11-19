@@ -1159,6 +1159,56 @@
   </style>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/nias-theme.css">
+<style id="branchFilterStyle">
+#branchFilter{
+  -webkit-appearance:none !important;appearance:none !important;
+  background-color:#0d3d26 !important;color:#f1b92f !important;
+  border:1px solid rgba(232,168,32,.55) !important;border-radius:12px !important;
+  padding:8px 10px 8px 26px !important;font-family:inherit;font-weight:600;
+  height:40px;cursor:pointer;outline:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23f1b92f' stroke-width='2' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat;background-position:left 8px center;
+}
+#branchFilter:focus{border-color:#f1b92f !important;box-shadow:0 0 0 2px rgba(241,185,47,.25)}
+#branchFilter option{background:#0d3d26;color:#fff}
+</style>
+<style id="sigCenterStyle">
+.psig-card .psig-inner{
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  gap:14px !important;
+}
+.psig-card .psig-avatar{ margin:0 auto !important; flex-shrink:0; }
+.psig-card .psig-content{
+  flex:none !important;
+  width:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  text-align:center !important;
+}
+.psig-card .psig-name-en,
+.psig-card .psig-name-ar{
+  width:100% !important;
+  text-align:center !important;
+  margin-inline:auto !important;
+}
+.psig-card .psig-divider{ margin-inline:auto !important; }
+.psig-card .psig-role{ text-align:center !important; width:100%; }
+.psig-card .psig-role-line{ display:block !important; text-align:center !important; }
+.psig-card .psig-footer{
+  width:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+  text-align:center !important;
+}
+.psig-card .psig-status{ justify-content:center !important; }
+</style>
 </head>
 
 <body>
@@ -1203,6 +1253,7 @@
       </div>
     </div>
     <div class="header-actions">
+      <select id="branchFilter" style="display:none;max-width:96px;font-size:11px;padding:4px;border-radius:8px;"></select>
       <button class="header-btn" onclick="App.toggleTheme()" title="تبديل الوضع الليلي" aria-label="تبديل الوضع الليلي">
         <i class="fas fa-moon"></i>
       </button>

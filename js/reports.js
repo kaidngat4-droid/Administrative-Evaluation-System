@@ -25,8 +25,8 @@ const ReportsApp = {
 
   async loadReports() {
     try {
-      const evals = await DB.getEvaluations();
-      const users = await DB.getUsers();
+      const evals = await DB.getEvaluationsScoped();
+      const users = await DB.getUsersScoped();
       
       // Stats
       const totalEvals = evals.length;

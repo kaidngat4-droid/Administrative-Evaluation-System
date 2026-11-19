@@ -297,8 +297,8 @@ const App = {
 
   async getStats() {
     try {
-      const evals = await DB.getEvaluations();
-      const users = await DB.getUsers();
+      const evals = await DB.getEvaluationsScoped();
+      const users = await DB.getUsersScoped();
       const today = new Date().toDateString();
       const todayEvals = evals.filter(e => new Date(e.createdAt).toDateString() === today).length;
       const avgScore = evals.length > 0
@@ -338,7 +338,7 @@ const App = {
 
   // ===================== تبويب التقييمات =====================
   async renderEvaluationsTab() {
-    const evals = await DB.getEvaluations();
+    const evals = await DB.getEvaluationsScoped();
     if (!evals.length) return `<div class="empty-state"><div class="icon">📊</div><h4>لا توجد تقييمات</h4></div>`;
 
     const start = (this.currentPage - 1) * this.itemsPerPage;
@@ -387,13 +387,13 @@ const App = {
 
   // ===================== تبويب المستخدمين =====================
   async renderUsersTab() {
-    const users = await DB.getUsers();
+    const users = await DB.getUsersScoped();
     return `<div style="display:flex;justify-content:space-between;margin-bottom:1rem;align-items:center">
       <h3 style="margin:0">إدارة المستخدمين</h3>
       <button class="btn btn-success btn-sm" onclick="App.showAddUserModal()">➕ مستخدم جديد</button>
     </div>
     <div class="table-wrap"><table class="data-table">
-      <thead><tr><th>الاسم</th><th>اسم المستخدم</th><th>الدور</th><th>القسم</th><th>الحالة</th><th>آخر دخول</th><th>إجراءات</th></tr></thead>
+      <thead><tr><th>الاسم</th><th>اسم المستخدم</th><th>الدور</th><th>القسم</th><th>الفرع</th><th>الحالة</th><th>آخر دخول</th><th>إجراءات</th></tr></thead>
       <tbody>${users.map(u => {
         const roleInfo = Auth.getRoleInfo(u.role);
         const isActive = u.isActive !== false;
@@ -404,6 +404,12 @@ const App = {
           <td>${u.username}</td>
           <td><span class="badge-role badge-${u.role}">${roleInfo.label}</span></td>
           <td>${u.department || '-'}</td>
+            <td>${Auth.user.role === 'admin'
+              ? `<select class="form-control" style="min-width:110px;font-size:12px;padding:4px;${u.branch ? '' : 'border-color:#e8a820;'}" onchange="App.setUserBranch('${u.id}', this.value)">
+                  <option value="">— بلا فرع —</option>
+                  ${DB.BRANCHES.map(b => `<option value="${b}"${b === u.branch ? ' selected' : ''}>${b.replace('المعهد الوطني للعلوم الإدارية - ', '')}</option>`).join('')}
+                </select>`
+              : (u.branch ? u.branch.replace('المعهد الوطني للعلوم الإدارية - ', '') : '—')}</td>
           <td><span class="badge-grade ${isActive ? 'grade-good' : 'grade-weak'}">${isActive ? 'نشط' : 'معطل'}</span></td>
           <td>${u.lastLogin ? new Date(u.lastLogin).toLocaleString('ar-SA') : '—'}</td>
           <td>
@@ -490,6 +496,12 @@ const App = {
           </select>
         </div>
         <div class="form-group"><label>القسم / الكلية</label><input type="text" id="new-user-dept" class="form-control" placeholder="مثال: قسم الإدارة الصحية"></div>
+        <div class="form-group"><label>الفرع *</label>
+          <select id="new-user-branch" class="form-control">
+            <option value="">اختر الفرع</option>
+            ${DB.BRANCHES.map(b => `<option value="${b}">${b}</option>`).join('')}
+          </select>
+        </div>
         <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="new-user-email" class="form-control"></div>
         <div class="form-group"><label>رقم الهاتف</label><input type="tel" id="new-user-phone" class="form-control"></div>
       </div>
@@ -500,6 +512,16 @@ const App = {
     </div>`;
     document.body.appendChild(overlay);
 
+    (async () => {
+      try {
+        if (Auth.user && Auth.user.role !== 'admin') {
+          const me = await DB.findUserById(Auth.user.id);
+          const sel = document.getElementById('new-user-branch');
+          if (sel && me && me.branch) { sel.value = me.branch; sel.disabled = true; }
+        }
+      } catch (e) {}
+    })();
+
     document.getElementById('confirm-add-user').addEventListener('click', async () => {
 
       const name = document.getElementById('new-user-name').value.trim();
@@ -507,16 +529,17 @@ const App = {
       const password = document.getElementById('new-user-password').value;
       const role = document.getElementById('new-user-role').value;
       const dept = document.getElementById('new-user-dept').value.trim();
+      const branch = document.getElementById('new-user-branch').value;
       const email = document.getElementById('new-user-email').value.trim();
       const phone = document.getElementById('new-user-phone').value.trim();
 
-      if (!name || !username || !password) {
+      if (!name || !username || !password || !branch) {
         this.showToast('يرجى ملء جميع الحقول المطلوبة', 'error');
         return;
       }
 
       try {
-        await DB.addUserAsync({ username, password, name, role, department: dept, email, phone });
+        await DB.addUserAsync({ username, password, name, role, department: dept, branch, email, phone });
         await DB.addLog(Auth.user.id, 'create_user', `إنشاء مستخدم ${name}`);
         overlay.remove();
         await this.switchTab('users', document.querySelector('.admin-tab:nth-child(2)'));
@@ -525,6 +548,16 @@ const App = {
         this.showToast(err.message || 'فشل في إضافة المستخدم', 'error');
       }
     });
+  },
+
+  async setUserBranch(id, branch) {
+    try {
+      await DB.updateUser(id, { branch });
+      await DB.addLog(Auth.user.id, 'update_user', `تغيير فرع المستخدم ${id}`);
+      this.showToast('تم تحديث الفرع', 'success');
+    } catch (err) {
+      this.showToast(err.message || 'فشل تحديث الفرع', 'error');
+    }
   },
 
   async toggleUserActive(id) {
@@ -667,7 +700,7 @@ const App = {
     // بناء الحقول مع دعم select
     const fieldsHtml = await Promise.all(form.fields.map(async f => {
       if (f.type === 'select' && f.source === 'users') {
-        let users = await DB.getUsers();
+        let users = await DB.getUsersScoped();
         if (f.filter?.role) {
           users = users.filter(u => f.filter.role.includes(u.role));
         }
@@ -1065,11 +1098,40 @@ function closeBye() {
 
 async function doLogout() {
     try {
+        if (typeof Auth !== 'undefined') {
+            if (Auth.user && typeof DB !== 'undefined') {
+                await DB.addLog(Auth.user.id, 'LOGOUT', `تسجيل خروج: ${Auth.user.username}`).catch(() => {});
+            }
+            await Auth.clearSession();
+        }
+    } catch (e) { console.warn('logout cleanup failed', e); }
+    try {
         if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
             await window.Capacitor.Plugins.App.exitApp();
             return;
         }
     } catch (e) {}
-    localStorage.clear();
     window.location.href = 'login.html';
 }
+
+// ═══ فلتر الفرع للمسؤول ═══
+(function initBranchFilter() {
+  let tries = 0;
+  const t = setInterval(() => {
+    tries++;
+    const sel = document.getElementById('branchFilter');
+    if (typeof Auth !== 'undefined' && Auth.user && sel) {
+      clearInterval(t);
+      if (Auth.user.role !== 'admin') return;
+      let cur = '';
+      try { cur = localStorage.getItem('nias_branch_filter') || ''; } catch (e) {}
+      sel.innerHTML = '<option value="">كل الفروع</option>' + DB.BRANCHES.map(b =>
+        `<option value="${b}"${b === cur ? ' selected' : ''}>${b.replace('المعهد الوطني للعلوم الإدارية - ', '')}</option>`).join('');
+      sel.style.display = '';
+      sel.onchange = () => {
+        try { localStorage.setItem('nias_branch_filter', sel.value); } catch (e) {}
+        location.reload();
+      };
+    } else if (tries > 100) clearInterval(t);
+  }, 100);
+})();

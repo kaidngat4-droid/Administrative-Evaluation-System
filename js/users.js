@@ -284,7 +284,7 @@ class UsersManager {
     this.#currentRequest = new AbortController();
 
     try {
-      this.#users = await DB.getUsers();
+      this.#users = await DB.getUsersScoped();
       this.#filteredUsers = [...this.#users];
       this.#updateStats();
       this.#applyFilters();
@@ -532,6 +532,7 @@ class UsersManager {
       this.els.form.email.value = user.email || '';
       this.els.form.phone.value = user.phone || '';
       this.els.form.department.value = user.department || '';
+      if (this.els.form.branch) this.els.form.branch.value = user.branch || '';
       this.els.form.role.value = user.role || '';
       this.els.form.status.value = user.isActive !== false ? 'active' : 'inactive';
       
@@ -633,6 +634,7 @@ class UsersManager {
       email: formData.get('email')?.trim(),
       phone: Utils.sanitizePhone(formData.get('phone') || ''),
       department: formData.get('department')?.trim(),
+      branch: formData.get('branch') || '',
       role: formData.get('role'),
       status: formData.get('status'),
       password: formData.get('password')
@@ -657,6 +659,7 @@ class UsersManager {
           email: data.email,
           phone: data.phone,
           department: data.department,
+          branch: data.branch,
           role: data.role,
           isActive: data.status === 'active'
         };
@@ -673,6 +676,7 @@ class UsersManager {
           name: data.name,
           role: data.role,
           department: data.department,
+          branch: data.branch,
           email: data.email,
           phone: data.phone,
           isActive: data.status === 'active'
@@ -830,3 +834,28 @@ window.Users = {
   closeDeleteModal: () => usersManager._closeDeleteModal?.(),
   confirmDelete: () => usersManager._confirmDelete?.()
 };
+
+// ═══ تعبئة قائمة الفروع في نموذج المستخدم ═══
+document.addEventListener('DOMContentLoaded', () => {
+  const sel = document.getElementById('user-branch');
+  if (!sel || typeof DB === 'undefined') return;
+  sel.innerHTML = '<option value="">اختر الفرع</option>' +
+    DB.BRANCHES.map(b => `<option value="${b}">${b.replace('المعهد الوطني للعلوم الإدارية - ', '')}</option>`).join('');
+});
+
+// ═══ غير المسؤول: إخفاء اختيار الفرع (يُفرض فرعه تلقائياً في DB) ═══
+(function lockBranchField() {
+  let tries = 0;
+  const t = setInterval(() => {
+    tries++;
+    const sel = document.getElementById('user-branch');
+    if (typeof Auth !== 'undefined' && Auth.user && sel) {
+      clearInterval(t);
+      if (Auth.user.role !== 'admin') {
+        sel.required = false;
+        const g = sel.closest('.form-group');
+        if (g) g.style.display = 'none';
+      }
+    } else if (tries > 100) clearInterval(t);
+  }, 100);
+})();

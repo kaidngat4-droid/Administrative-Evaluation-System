@@ -1206,6 +1206,9 @@
       <button class="header-btn" onclick="App.toggleTheme()" title="تبديل الوضع الليلي" aria-label="تبديل الوضع الليلي">
         <i class="fas fa-moon"></i>
       </button>
+      <button class="header-btn" id="logoutBtn" onclick="confirmLogout()" title="خروج" aria-label="خروج">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
       <div class="user-chip" id="user-chip" onclick="Auth.logout()" title="تسجيل الخروج">
         <div class="user-avatar" id="user-avatar">--</div>
         <div class="user-info">
@@ -1280,5 +1283,30 @@
   <!-- Service Worker -->
 <script src="js/sw-register.js"></script>
 
+<style>
+#byeOverlay{position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:rgba(3,12,8,.78);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);z-index:99999;opacity:0;transition:opacity .25s ease}
+#byeOverlay.show{display:flex;opacity:1}
+#byeCard{position:relative;width:100%;max-width:340px;box-sizing:border-box;padding:28px 22px 22px;text-align:center;border-radius:22px;background:linear-gradient(160deg,#15603a 0%,#0d3d26 100%);border:1px solid rgba(232,168,32,.55);box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08);transform:translateY(16px) scale(.94);transition:transform .3s cubic-bezier(.2,.9,.3,1.2)}
+#byeOverlay.show #byeCard{transform:none}
+#byeCard .bye-icon{width:64px;height:64px;margin:-58px auto 14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;background:linear-gradient(145deg,#f3c14a,#c98f12);box-shadow:0 8px 20px rgba(0,0,0,.4),0 0 0 5px #0d3d26}
+#byeCard h3{margin:0 0 6px;font-size:22px;color:#f1b92f;font-family:var(--font-heading,inherit)}
+#byeCard p{margin:0 0 20px;font-size:14px;line-height:1.7;color:rgba(255,255,255,.78)}
+#byeCard .bye-actions{display:flex;gap:10px;flex-direction:row-reverse}
+#byeCard button{flex:1;padding:12px 8px;border-radius:12px;font-size:15px;font-family:inherit;cursor:pointer;transition:transform .15s ease,filter .15s ease}
+#byeCard button:active{transform:scale(.97)}
+#byeCard .bye-ok{border:none;color:#1a1200;font-weight:700;background:linear-gradient(145deg,#f3c14a,#d9a020)}
+#byeCard .bye-cancel{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.28)}
+</style>
+<div id="byeOverlay" onclick="if(event.target===this)closeBye()">
+  <div id="byeCard" role="dialog" aria-modal="true" aria-labelledby="byeTitle">
+    <div class="bye-icon">🎖️</div>
+    <h3 id="byeTitle">شكراً لك!</h3>
+    <p>تقييمك يساعدنا في تحسين أدائنا.<br>هل تريد الخروج من التطبيق؟</p>
+    <div class="bye-actions">
+      <button class="bye-ok" onclick="doLogout()">حسناً، خروج</button>
+      <button class="bye-cancel" onclick="closeBye()">البقاء</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

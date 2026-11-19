@@ -1049,3 +1049,27 @@ if (typeof SWRegistration !== 'undefined') {
 } else {
   console.warn('[NIAS] ⚠️ SWRegistration غير متوفر (قد يكون sw.js مفقود)');
 }
+
+// ═══════════════════════════════════════════════════════════
+// وظائف الخروج
+// ═══════════════════════════════════════════════════════════
+function confirmLogout() {
+    const o = document.getElementById('byeOverlay');
+    if (o) { o.classList.add('show'); }
+}
+
+function closeBye() {
+    const o = document.getElementById('byeOverlay');
+    if (o) { o.classList.remove('show'); }
+}
+
+async function doLogout() {
+    try {
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+            await window.Capacitor.Plugins.App.exitApp();
+            return;
+        }
+    } catch (e) {}
+    localStorage.clear();
+    window.location.href = 'login.html';
+}

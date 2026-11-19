@@ -107,3 +107,20 @@ html body .info-section{
 html body .info-section div[style*="color"]{
   color:rgba(255,255,255,.94) !important;
 }
+
+/* توسيط محتوى بطاقة التوقيع الإلكتروني */
+html body .psig-card {
+    text-align: center !important;
+}
+html body .psig-card .psig-name-en,
+html body .psig-card .psig-name-ar,
+html body .psig-card h1, 
+html body .psig-card h2, 
+html body .psig-card h3,
+html body .psig-card p,
+html body .psig-card div[class*="title"] {
+    text-align: center !important;
+    justify-content: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">نظام التقييم الإداري</string>
+    <string name="title_activity_main">نظام التقييم الإداري</string>
+    <string name="package_name">ye.nias.eval</string>
+    <string name="custom_url_scheme">ye.nias.eval</string>
+</resources>

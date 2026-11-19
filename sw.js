@@ -19,7 +19,7 @@
 /* ═══════════════════════════════════════════════════════
    Configuration & Constants
    ═══════════════════════════════════════════════════════ */
-const BUILD_ID = '1.2.1';
+const BUILD_ID = '1.2.3';
 const CACHE_PREFIX = 'nias';
 const CACHE_NAMES = {
   static: `${CACHE_PREFIX}-static-${BUILD_ID}`,

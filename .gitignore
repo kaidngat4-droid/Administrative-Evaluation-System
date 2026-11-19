@@ -1,0 +1,12 @@
+# Node.js & Capacitor
+node_modules/
+www/
+package-lock.json
+
+# Android Build Files
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/app/src/main/assets/public/
+android/app/src/main/res/xml/config.xml

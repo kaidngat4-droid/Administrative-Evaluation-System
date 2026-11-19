@@ -1,0 +1,26 @@
+{
+  "name": "eval-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sw-register.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaidngat4-droid/Administrative-Evaluation-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kaidngat4-droid/Administrative-Evaluation-System/issues"
+  },
+  "homepage": "https://github.com/kaidngat4-droid/Administrative-Evaluation-System#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/cli": "^8.6.2",
+    "@capacitor/core": "^8.6.2"
+  }
+}
